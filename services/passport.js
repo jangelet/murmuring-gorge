@@ -28,9 +28,13 @@ passport.use(
       User.findOne(profile.id).then(existingUser => {
         if (existingUser) {
           //user already is in collection
+          //no error, passing in null and found user
+          done(null, existingUser);
         } else {
           //no record - takes model instance and saves it to DB
-          new User({ googleId: profile.id }).save();
+          new User({ googleId: profile.id })
+            .save()
+            .then(user => done(null, user));
         }
       });
     }
