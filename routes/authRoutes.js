@@ -19,4 +19,10 @@ module.exports = app => {
   //in this case, google code will be in URL
   //Passport will notice that and handle request differently
   app.get('/auth/google/callback', passport.authenticate('google'));
+
+  //tester function for auth flow
+  app.get('/api/current_user', (req, res) => {
+    //sends back req.user
+    res.send(req.user);
+  });
 };

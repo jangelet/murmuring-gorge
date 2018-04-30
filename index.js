@@ -1,6 +1,9 @@
-//import Express, Mongoose
+//initial app setup
+
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
 //contains secret info
 const keys = require('./config/keys');
 //will load User.js when first boots up -- need to require model first
@@ -14,6 +17,18 @@ mongoose.connect(keys.mongoURI);
 //create express application
 //represents running express app
 const app = express();
+
+//tells Express that it needs to make use of cookies in apps
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [keys.cookieKey]
+  })
+);
+
+//tells passport to make use of cookies for authentication purposes
+app.use(passport.initialize());
+app.use(passport.session());
 
 //1st parentheses returns function, 2nd immediately calls it with app as arg
 require('./routes/authRoutes')(app);
